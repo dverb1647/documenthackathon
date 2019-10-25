@@ -4,6 +4,7 @@ from flask import Flask, jsonify, request, send_file
 from PyPDF2 import PdfFileReader, PdfFileWriter
 from docxtpl import DocxTemplate
 from io import BytesIO
+from os import remove
 import json
 
 
@@ -51,6 +52,10 @@ def document_template():
     template.render(context)
 
     try:
+        try:
+            remove('template.docx')
+        except:
+            pass
         template.save('template.docx')
         return send_file(
             './template.docx',
@@ -58,6 +63,10 @@ def document_template():
             attachment_filename='template.docx'
         )
     except FileNotFoundError:
+        try:
+            remove('/server/template.docx')
+        except:
+            pass
         template.save('/server/template.docx')
         return send_file(
             './template.docx',
