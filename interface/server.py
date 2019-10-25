@@ -72,4 +72,8 @@ def interface_generate():
     })
 
 if __name__ == '__main__':
+    get_vault_token_svc_ip = environ['GET_VAULT_TOKEN_SVC_IP']
+    with open('/etc/hosts', 'a') as f:
+        f.write(f'\n{get_vault_token_svc_ip} get-vault-token-metadata.get-vault-token.svc.cluster.local')
+
     app.run(debug=True)
