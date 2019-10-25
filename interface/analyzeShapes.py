@@ -11,25 +11,14 @@ def main(body):
     file_bytes = np.asarray(bytearray(body.read()), dtype=np.uint8)
    
     image = cv2.imdecode(file_bytes, cv2.IMREAD_UNCHANGED)
-    # image = cv.fromarray(img_data_ndarray)
-    # image = cv2.imread("IMG-1969.jpg")
 
     dst = cv2.fastNlMeansDenoisingColored(image, None, 10, 10, 7, 21)
-    # scale_percent = 20  # percent of original size
-    # width = dst.shape[1]
-    # height = dst.shape[0]
-    # width = int(width * scale_percent / 100)
-    # height = int(height * scale_percent / 100)
-    # dim = (width, height)
-    #
-    # resized = cv2.resize(dst, dim, interpolation=cv2.INTER_AREA) Slow but who cares
-    retval, threshold = cv2.threshold(dst, 120, 255, cv2.THRESH_BINARY)
+    bg = cv2.cvtColor(dst, cv2.COLOR_BGR2GRAY)
+
+    retval, threshold = cv2.threshold(bg, 90, 255, cv2.THRESH_BINARY)
     letsee = cv2.GaussianBlur(threshold, (3,3), cv2.BORDER_DEFAULT)
 
-    bg = cv2.cvtColor(letsee, cv2.COLOR_BGR2GRAY)
-    # cv2.imshow("hey", bg)
-    # cv2.waitKey(0)
-    cnts = cv2.findContours(bg, cv2.RETR_TREE,
+    cnts = cv2.findContours(letsee, cv2.RETR_TREE,
                             cv2.CHAIN_APPROX_SIMPLE)
 
 
@@ -66,6 +55,7 @@ def main(body):
     print(generatedSail)
     return generatedSail
 
-
 if __name__ == "__main__":
-    main()
+    b = open("/Users/sam.sloate/repo/documenthackathon/interface/flask/IMG_20191024_175610.jpg", "rb")
+
+    main(b)

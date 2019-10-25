@@ -69,7 +69,7 @@ class Shape:
                 return self.getTextFieldType()
         elif self.shape == "circle":
             parent = self.hierarchy[3]
-            if self.getArea() > 150 and (parent == -1 or parent == 0):
+            if self.getArea() > 1000 and (parent == -1 or parent == 0):
                 return "PIECHART"
             return None
         else:  # Currently ignore any nested boxes
@@ -79,7 +79,7 @@ class Shape:
         return (self.getMaxX() - self.getMinX()) * (self.getMaxY() - self.getMinY())
 
     def getTextFieldType(self):
-        if self.getMaxY() - self.getMinY() > (1200 / 1200 * 300):  # Compare height, heuristic is 300 can be tweaked
+        if self.getMaxY() - self.getMinY() > 300:  # Compare height, heuristic is 300 can be tweaked
             return "PARAGRAPH"
         return "TEXT"
 
