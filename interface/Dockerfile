@@ -3,4 +3,4 @@ RUN apt-get update && apt-get install curl libglib2.0-0 libsm6 libxext6 libxrend
 COPY . /app
 WORKDIR /app
 RUN pip install --upgrade pip && pip install -r requirements.txt
-CMD FLASK_APP=server.py flask run -p 7002
+CMD FLASK_APP=server.py flask run -p 7002 --host=0.0.0.0
