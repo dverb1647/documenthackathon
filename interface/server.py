@@ -7,6 +7,8 @@ import subprocess
 import requests
 
 import analyzeShapes
+
+app = Flask(__name__)
 VAULT_ADDR = 'https://vault.eng.appianci.net'
 AWS_SESSION_CREDENTIALS = {
     'last_updated': datetime.now() - timedelta(hours=24),
