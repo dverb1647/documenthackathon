@@ -23,7 +23,6 @@ def refresh_aws_session_credentials():
     global AWS_SESSION_CREDENTIALS
 
     # Get a token for an application role via get-vault-token
-    environ['VAULT_KUBERNETES_AUTH_BACKEND_ROLE'] = 'rekognition-detect-text-principal-role'
     completed_process = subprocess.run(['get-vault-token', '--application', 'rekognition-detect-text'], stdout=subprocess.PIPE, check=True)
     application_token = completed_process.stdout.decode().strip()
 
@@ -56,6 +55,10 @@ def interface_generate():
     if datetime.now() - AWS_SESSION_CREDENTIALS['last_updated'] > timedelta(minutes=55):
         refresh_aws_session_credentials()
 
+    get_vault_token_svc_ip = environ['GET_VAULT_TOKEN_SVC_IP']
+    with open('/etc/hosts', 'a') as f:
+        f.write(f'\n{get_vault_token_svc_ip} get-vault-token-metadata.get-vault-token.svc.cluster.local')
+
     image = request.files['image']
     client = boto3.client(
         'rekognition',
@@ -80,8 +83,4 @@ def interface_generate():
     })
 
 if __name__ == '__main__':
-    get_vault_token_svc_ip = environ['GET_VAULT_TOKEN_SVC_IP']
-    with open('/etc/hosts', 'a') as f:
-        f.write(f'\n{get_vault_token_svc_ip} get-vault-token-metadata.get-vault-token.svc.cluster.local')
-
     app.run(debug=True)
