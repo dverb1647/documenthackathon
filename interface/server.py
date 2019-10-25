@@ -2,6 +2,7 @@
 
 from flask import Flask, jsonify, request
 from datetime import datetime, timedelta
+from os import environ
 import boto3
 import subprocess
 import requests
