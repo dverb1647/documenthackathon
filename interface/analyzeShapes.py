@@ -7,14 +7,15 @@ import SailGenerator
 def main(body):
     font = cv2.FONT_HERSHEY_COMPLEX
     kernel = np.ones((5, 5), np.uint8)
-    file_bytes = np.asarray(bytearray(body), dtype=np.uint8)
+    # b = open("/Users/michael.kochubeevsky/repo/documenthackathon/interface/IMG-1969.jpg", "rb")
+    file_bytes = np.asarray(bytearray(body.read()), dtype=np.uint8)
    
     image = cv2.imdecode(file_bytes, cv2.IMREAD_UNCHANGED)
     # image = cv.fromarray(img_data_ndarray)
-    # image = cv2.imread("/Users/sam.sloate/repo/image_scanning/data/IMG_20191024_175610.jpg")
+    # image = cv2.imread("IMG-1969.jpg")
 
     bg = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    dst = cv2.fastNlMeansDenoising(bg, None, 10, 10, 7, 21)
+    dst = cv2.fastNlMeansDenoising(bg)
     # scale_percent = 20  # percent of original size
     # width = dst.shape[1]
     # height = dst.shape[0]

@@ -62,7 +62,7 @@ def interface_generate():
 
     # TODO
 
-    data = analyzeShapes.main(request.data)
+    data = analyzeShapes.main(request.files['image'])
 
     return jsonify({
         "success": True,
