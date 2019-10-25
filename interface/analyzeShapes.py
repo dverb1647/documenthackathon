@@ -4,12 +4,18 @@ import numpy as np
 import SailGenerator
 
 
-def main():
+def main(body):
     font = cv2.FONT_HERSHEY_COMPLEX
     kernel = np.ones((5, 5), np.uint8)
-    image = cv2.imread("/Users/sam.sloate/repo/image_scanning/data/IMG_20191024_175610.jpg")
+    # b = open("/Users/michael.kochubeevsky/repo/documenthackathon/interface/IMG-1969.jpg", "rb")
+    file_bytes = np.asarray(bytearray(body.read()), dtype=np.uint8)
+   
+    image = cv2.imdecode(file_bytes, cv2.IMREAD_UNCHANGED)
+    # image = cv.fromarray(img_data_ndarray)
+    # image = cv2.imread("IMG-1969.jpg")
 
-    dst = cv2.fastNlMeansDenoisingColored(image, None, 10, 10, 7, 21)
+    bg = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    dst = cv2.fastNlMeansDenoising(bg)
     # scale_percent = 20  # percent of original size
     # width = dst.shape[1]
     # height = dst.shape[0]
@@ -21,10 +27,10 @@ def main():
     retval, threshold = cv2.threshold(dst, 120, 255, cv2.THRESH_BINARY)
     letsee = cv2.GaussianBlur(threshold, (3,3), cv2.BORDER_DEFAULT)
 
-    bg = cv2.cvtColor(letsee, cv2.COLOR_BGR2GRAY)
+
     # cv2.imshow("hey", bg)
     # cv2.waitKey(0)
-    cnts = cv2.findContours(bg, cv2.RETR_TREE,
+    cnts = cv2.findContours(letsee, cv2.RETR_TREE,
                             cv2.CHAIN_APPROX_SIMPLE)
 
     sd = ShapeDetector()
