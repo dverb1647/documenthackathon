@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
 
 from flask import Flask, jsonify, request
+from os import environ
 from datetime import datetime, timedelta
 import boto3
 import subprocess
 import requests
 
-import analyzeShapes
 
 app = Flask(__name__)
+
 VAULT_ADDR = 'https://vault.eng.appianci.net'
+
 AWS_SESSION_CREDENTIALS = {
     'last_updated': datetime.now() - timedelta(hours=24),
     'aws_access_key_id': None,
@@ -64,7 +66,13 @@ def interface_generate():
 
     # TODO
 
-    data = analyzeShapes.main(request.files['image'])
+    data = '''
+    {
+        a!textField(
+            label: "Label"
+        )
+    }
+    '''
 
     return jsonify({
         "success": True,
